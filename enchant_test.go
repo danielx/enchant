@@ -5,11 +5,7 @@ import (
 )
 
 func TestDictExists(t *testing.T) {
-	e, err := New()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
+	e := New()
 	defer e.Free()
 
 	expect := map[string]bool{
@@ -40,14 +36,10 @@ func TestDictLoad(t *testing.T) {
 	}
 
 	for dict, shouldError := range expect {
-		e, err := New()
-		if err != nil {
-			t.Errorf(err.Error())
-			return
-		}
+		e := New()
 		defer e.Free()
 
-		err = e.DictLoad(dict)
+		err := e.DictLoad(dict)
 
 		if err != nil && !shouldError {
 			t.Errorf("unexpected error returned for dict: %s, %v", dict, err)
@@ -68,14 +60,10 @@ func TestDictLoadNoBroker(t *testing.T) {
 }
 
 func TestDictLoadMultiple(t *testing.T) {
-	e, err := New()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
+	e := New()
 	defer e.Free()
 
-	err = e.DictLoad("en")
+	err := e.DictLoad("en")
 	if err != nil {
 		t.Errorf(err.Error())
 		return
@@ -88,14 +76,10 @@ func TestDictLoadMultiple(t *testing.T) {
 }
 
 func TestDictCheck(t *testing.T) {
-	e, err := New()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
+	e := New()
 	defer e.Free()
 
-	err = e.DictLoad("en")
+	err := e.DictLoad("en")
 	if err != nil {
 		t.Errorf(err.Error())
 		return
@@ -131,28 +115,20 @@ func TestDictCheckNoBroker(t *testing.T) {
 }
 
 func TestDictCheckNoDict(t *testing.T) {
-	e, err := New()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
+	e := New()
 	defer e.Free()
 
-	_, err = e.DictCheck("hi")
+	_, err := e.DictCheck("hi")
 	if err == nil {
 		t.Errorf("expected an error because no dictionary has been loaded")
 	}
 }
 
 func TestDictSuggestion(t *testing.T) {
-	e, err := New()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
+	e := New()
 	defer e.Free()
 
-	err = e.DictLoad("en")
+	err := e.DictLoad("en")
 	if err != nil {
 		t.Errorf(err.Error())
 		return
@@ -198,14 +174,10 @@ func TestDictSuggestNoBroker(t *testing.T) {
 }
 
 func TestDictSuggestNoDict(t *testing.T) {
-	e, err := New()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
+	e := New()
 	defer e.Free()
 
-	_, err = e.DictSuggest("hi")
+	_, err := e.DictSuggest("hi")
 	if err == nil {
 		t.Errorf("expected an error because no dictionary has been loaded")
 	}

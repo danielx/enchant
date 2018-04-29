@@ -23,8 +23,8 @@ type Enchant struct {
 }
 
 // New allocates a new Enchant instance.
-func New() (e *Enchant, err error) {
-	return &Enchant{C.enchant_broker_init(), nil}, nil
+func New() (e *Enchant) {
+	return &Enchant{broker: C.enchant_broker_init()}
 }
 
 // Free frees the allocated memory related to the Enchant instance.
