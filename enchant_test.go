@@ -68,7 +68,7 @@ func TestDictLoadNoBroker(t *testing.T) {
 	}
 }
 
-func TestDictLoadMultiple(t *testing.T) {
+func TestDictLoadMultipleWithoutFree(t *testing.T) {
 	e := New()
 	defer e.Free()
 
@@ -81,6 +81,24 @@ func TestDictLoadMultiple(t *testing.T) {
 	err = e.DictLoad("en_US")
 	if err == nil {
 		t.Errorf("expected an error to be returned when loading multiple dictionaries")
+	}
+}
+
+func TestDictLoadMultipleWithFree(t *testing.T) {
+	e := New()
+	defer e.Free()
+
+	err := e.DictLoad("en")
+	if err != nil {
+		t.Errorf(err.Error())
+		return
+	}
+
+	e.DictFree()
+
+	err = e.DictLoad("en_US")
+	if err != nil {
+		t.Errorf(err.Error())
 	}
 }
 
