@@ -27,7 +27,7 @@ func New() (e *Enchant, err error) {
 	return &Enchant{C.enchant_broker_init(), nil}, nil
 }
 
-// Free releases the allocated memory related to the Enchant instance.
+// Free frees the allocated memory related to the Enchant instance.
 func (e *Enchant) Free() {
 	if e.dict != nil {
 		C.enchant_broker_free_dict(e.broker, e.dict)
