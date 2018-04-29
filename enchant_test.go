@@ -161,9 +161,9 @@ func TestDictSuggestion(t *testing.T) {
 		return
 	}
 
-	expect := map[string][]string{
-		"":           nil,
-		"unexpected": []string{"unexpected", "unaccepted", "expected"},
+	expect := map[string]bool{
+		"":           false,
+		"unexpected": true,
 	}
 
 	for word, expectedValue := range expect {
@@ -174,19 +174,10 @@ func TestDictSuggestion(t *testing.T) {
 			return
 		}
 
-		if suggestions == nil && expectedValue != nil {
-			t.Errorf("expected %v for word: %s, got nil", word, expectedValue)
-		} else if suggestions != nil && expectedValue == nil {
-			t.Errorf("expected nil for word: %s, got: %v", word, suggestions)
-		} else if len(suggestions) != len(expectedValue) {
-			t.Errorf("expected %v for %s, got %v", expectedValue, word, suggestions)
-		} else {
-			for i := range suggestions {
-				if suggestions[i] != expectedValue[i] {
-					t.Errorf("expected %v for %s, got %v", expectedValue, word, suggestions)
-					return
-				}
-			}
+		if suggestions == nil && expectedValue {
+			t.Errorf("expected suggestions for word: %s, got none", word)
+		} else if suggestions != nil && !expectedValue {
+			t.Errorf("expected no suggestions for word: %s, got: %v", word, suggestions)
 		}
 	}
 }
