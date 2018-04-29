@@ -31,6 +31,10 @@ Or you can run the tests in a docker container with:
 make test
 ```
 
+## Docs
+
+https://godoc.org/github.com/danielx/enchant
+
 ## Usage
 
 ```go
