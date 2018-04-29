@@ -29,14 +29,19 @@ func New() (e *Enchant, err error) {
 
 // Free frees the allocated memory related to the Enchant instance.
 func (e *Enchant) Free() {
-	if e.dict != nil {
-		C.enchant_broker_free_dict(e.broker, e.dict)
-		e.dict = nil
-	}
+	e.DictFree() // make sure dictionary is freed to prevent memory leaks.
 
 	if e.broker != nil {
 		C.enchant_broker_free(e.broker)
 		e.broker = nil
+	}
+}
+
+// DictFree frees the current dictionary allowing another to be loaded.
+func (e *Enchant) DictFree() {
+	if e.broker != nil && e.dict != nil {
+		C.enchant_broker_free_dict(e.broker, e.dict)
+		e.dict = nil
 	}
 }
 
