@@ -209,3 +209,78 @@ func TestDictSuggestNoDict(t *testing.T) {
 		t.Errorf("expected an error because no dictionary has been loaded")
 	}
 }
+
+func BenchmarkFreeBrokerAndDictAfterUse(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		e := New()
+
+		err := e.DictLoad("en")
+		if err != nil {
+			b.Errorf(err.Error())
+			return
+		}
+
+		found, err := e.DictCheck("hello")
+		if err != nil {
+			b.Errorf(err.Error())
+			return
+		}
+
+		if found != true {
+			b.Errorf("expected hello to be found in the dictionary")
+			return
+		}
+
+		e.Free()
+	}
+}
+
+func BenchmarkFreeDictAfterUse(b *testing.B) {
+	e := New()
+	defer e.Free()
+
+	for i := 0; i < b.N; i++ {
+		err := e.DictLoad("en")
+		if err != nil {
+			b.Errorf(err.Error())
+			return
+		}
+
+		found, err := e.DictCheck("hello")
+		if err != nil {
+			b.Errorf(err.Error())
+			return
+		}
+
+		if found != true {
+			b.Errorf("expected hello to be found in the dictionary")
+			return
+		}
+
+		e.DictFree()
+	}
+}
+
+func BenchmarkReuseDictAndBroker(b *testing.B) {
+	e := New()
+	defer e.Free()
+
+	err := e.DictLoad("en")
+	if err != nil {
+		b.Errorf(err.Error())
+		return
+	}
+
+	for i := 0; i < b.N; i++ {
+		found, err := e.DictCheck("hello")
+		if err != nil {
+			b.Errorf(err.Error())
+			return
+		}
+
+		if found != true {
+			b.Errorf("expected hello to be found in the dictionary")
+			return
+		}
+	}
+}
