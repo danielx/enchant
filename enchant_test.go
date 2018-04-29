@@ -28,6 +28,15 @@ func TestDictExists(t *testing.T) {
 	}
 }
 
+func TestDictExistsNoBroker(t *testing.T) {
+	e := &Enchant{}
+
+	_, err := e.DictExists("en")
+	if err == nil {
+		t.Errorf("expected an error because no broker has been initialized")
+	}
+}
+
 func TestDictLoad(t *testing.T) {
 	expect := map[string]bool{
 		"en":        false,
