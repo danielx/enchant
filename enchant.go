@@ -63,7 +63,7 @@ func (e *Enchant) DictLoad(tag string) error {
 	}
 
 	if e.dict != nil {
-		return fmt.Errorf("dictionary already loaded")
+		return fmt.Errorf("an dictionary is already loaded")
 	}
 
 	cTag := C.CString(tag)
@@ -71,7 +71,7 @@ func (e *Enchant) DictLoad(tag string) error {
 
 	e.dict = C.enchant_broker_request_dict(e.broker, cTag)
 	if e.dict == nil {
-		return fmt.Errorf("no suitable dictionary could be found by name %s", tag)
+		return fmt.Errorf("no suitable dictionary could be found by name: %s", tag)
 	}
 
 	return nil
