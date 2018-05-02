@@ -131,10 +131,10 @@ func (e *Enchant) DictSuggest(word string) (suggestions []string, err error) {
 	ns := (*C.size_t)(unsafe.Pointer(&suggs))
 
 	response := C.enchant_dict_suggest(e.dict, cWord, *s, ns)
-	defer C.enchant_dict_free_string_list(e.dict, response)
 	if response == nil {
 		return nil, nil
 	}
+	defer C.enchant_dict_free_string_list(e.dict, response)
 
 	suggestions = make([]string, 0, suggs)
 	for i := uintptr(0); i < suggs; i++ {
