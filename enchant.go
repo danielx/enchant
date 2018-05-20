@@ -71,7 +71,7 @@ func (e *Enchant) DictLoad(tag string) error {
 
 	e.dict = C.enchant_broker_request_dict(e.broker, cTag)
 	if e.dict == nil {
-		return fmt.Errorf("no suitable dictionary could be found by name: %s", tag)
+		return fmt.Errorf("failed to load dictionary by tag: %s", tag)
 	}
 
 	return nil
