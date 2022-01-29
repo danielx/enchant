@@ -63,7 +63,7 @@ func (e *Enchant) DictLoad(tag string) error {
 	}
 
 	if e.dict != nil {
-		return fmt.Errorf("an dictionary is already loaded")
+		return fmt.Errorf("a dictionary is already loaded")
 	}
 
 	cTag := C.CString(tag)
