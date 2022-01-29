@@ -13,11 +13,13 @@ static char* getString(char **c, int i) {
 import "C"
 import (
 	"fmt"
+	"sync"
 	"unsafe"
 )
 
 // Enchant is the type that contains the package internals.
 type Enchant struct {
+	sync.Mutex
 	broker *C.EnchantBroker
 	dict   *C.EnchantDict
 }
@@ -97,7 +99,9 @@ func (e *Enchant) DictCheck(word string) (found bool, err error) {
 	size := uintptr(len(word))
 	s := (*C.ssize_t)(unsafe.Pointer(&size))
 
+	e.Lock()
 	status := C.enchant_dict_check(e.dict, cWord, *s)
+	e.Unlock()
 
 	if status < 0 {
 		return false, fmt.Errorf("could not check word: %s", word)
@@ -129,6 +133,9 @@ func (e *Enchant) DictSuggest(word string) (suggestions []string, err error) {
 	// number of suggestions returned.
 	var suggs uintptr
 	ns := (*C.size_t)(unsafe.Pointer(&suggs))
+
+	e.Lock()
+	defer e.Unlock()
 
 	response := C.enchant_dict_suggest(e.dict, cWord, *s, ns)
 	if response == nil {
