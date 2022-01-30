@@ -2,6 +2,8 @@
 
 This package provides bindings for the enchant spell checking library.
 
+See https://github.com/danielx/enchant2 for enchant v2 bindings
+
 ## Prerequisites
 
 You need to have `libenchant` version 1.6 and its development files
